@@ -11,12 +11,16 @@ public class Player : MonoBehaviour
 
     [Header("Shooting")]
     public GameObject bulletPrefab;
-    public float fireRate = 1;
+    public float fireRate = 5;
     public Transform firePoint;
 
-    [Header("Audio")]
+    [Header("AudioTank")]
     public AudioSource audioSource; 
-    public AudioClip Moving; 
+    public AudioClip audioClip;
+
+    [Header("AudioBullet")]
+    public AudioSource audiosource;
+    public AudioClip audioclip;
 
     private bool isMoving = false; 
 
@@ -28,6 +32,13 @@ public class Player : MonoBehaviour
     void Shoot()
     {
         Instantiate(bulletPrefab, firePoint.position, transform.rotation);
+        ShootSound();
+    }
+
+    void ShootSound()
+    {
+        audiosource.clip = audioclip;
+        audiosource.Play();
     }
 
     void Update()
@@ -51,6 +62,11 @@ public class Player : MonoBehaviour
         if (direction != Vector3.zero)
         {
             transform.forward = direction; //if not working transform.right or transfrom.right = -direction
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
         }
 
         
@@ -58,7 +74,7 @@ public class Player : MonoBehaviour
         {
             if (!audioSource.isPlaying)
             {
-                audioSource.clip = Moving;
+                audioSource.clip = audioClip;
                 audioSource.Play();
             }
         }
